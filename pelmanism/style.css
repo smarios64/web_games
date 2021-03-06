@@ -15,7 +15,7 @@ body {
     position: absolute;
     width: 800px;
     height: 600px;
-    background-image: linear-gradient(180deg, lightblue, #57a);
+    background-image: linear-gradient(180deg, #57a, lightblue);
 }
 
 #gameOverScreen {
@@ -47,8 +47,8 @@ table {
 }
 
 .btn {
-    background-image: linear-gradient(180deg, #00ddaa, #3a9966);
-    border: solid 3px #3a997b;
+    background-image: linear-gradient(180deg, #00d2ff, #3a7bd5);
+    border: solid 3px #3a7bd5;
     text-align: center;
     font-weight: bold;
     color: yellow;

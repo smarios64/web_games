@@ -49,7 +49,11 @@
     const onCardClicked = function(e) {
         const index = covers.indexOf(e.currentTarget);
         pairs[index].card.style.display = 'block';
+        pairs[index].card.style.boxShadow = '0 0 5px 5px yellow';
         covers[index].style.display = 'none';
+
+        pairs[index].audio.play();
+        
         if (openCard < 0) {
             openCard = index;
         }
@@ -59,8 +63,6 @@
                 // remove the cards from pairs[]
                 var openCards = [pairs[openCard].card, pairs[index].card];
                 pairs[openCard] = pairs[index] = undefined;
-                correctAudio.play();
-                openCards[0].style.boxShadow = openCards[1].style.boxShadow = '0 0 5px 5px #0f8';
 
                 // check if we ran out of pairs and if so, game over
                 var gameOver = true;
@@ -70,17 +72,20 @@
                         break;
                     }
                 }
+
                 setTimeout(function() {
-                    if (gameOver) {
-                        congratsAudio.play();
-                        gameOverScreen.style.display = 'block';
-                    }
-                    openCards[0].style.boxShadow = openCards[1].style.boxShadow = '0 0 6px black';
+                    openCards[0].style.boxShadow = openCards[1].style.boxShadow = '0 0 5px 5px #0f8';
+                    correctAudio.play();
+                    setTimeout(function() {
+                        if (gameOver) {
+                            congratsAudio.play();
+                            gameOverScreen.style.display = 'block';
+                        }
+                        openCards[0].style.boxShadow = openCards[1].style.boxShadow = '0 0 6px black';
+                    }, 1000);
                 }, 1000);
             }
             else {
-                wrongAudio.play();
-                pairs[openCard].card.style.boxShadow = pairs[index].card.style.boxShadow = '0 0 5px 5px red';
 
                 // remove events temporarily
                 for (var i = 0; i < covers.length; ++i) {
@@ -89,13 +94,17 @@
                 // flip cards back down
                 const tempCard = openCard;
                 setTimeout(function() {
-                    pairs[tempCard].card.style.boxShadow = pairs[index].card.style.boxShadow = '0 0 6px black';
-                    pairs[tempCard].card.style.display = pairs[index].card.style.display = 'none';
-                    covers[tempCard].style.display = covers[index].style.display = 'block';
-                    for (var i = 0; i < covers.length; ++i) {
-                        covers[i].onclick = onCardClicked;
-                    }
-                }, 2000);
+                    pairs[tempCard].card.style.boxShadow = pairs[index].card.style.boxShadow = '0 0 5px 5px red';
+                    wrongAudio.play();
+                    setTimeout(function() {
+                        pairs[tempCard].card.style.boxShadow = pairs[index].card.style.boxShadow = '0 0 6px black';
+                        pairs[tempCard].card.style.display = pairs[index].card.style.display = 'none';
+                        covers[tempCard].style.display = covers[index].style.display = 'block';
+                        for (var i = 0; i < covers.length; ++i) {
+                            covers[i].onclick = onCardClicked;
+                        }
+                    }, 1000);
+                }, 1000);
             }
             openCard = -1;
         }
@@ -123,9 +132,10 @@
     }
 
     for (var i = 0; i < COLORS.length; ++i) {
+        var audio = new Audio('assets/audio/card_' + i + '.mp3');
         for (var j = 0; j < 2; ++j) {
             var card = document.createElement('div');
-            deck.push({ card: card, audio: 'assets/audio/card_' + i + '.mp3' });
+            deck.push({ card: card, audio: audio });
             card.className = 'card';
             card.style.backgroundColor = COLORS[i];
             card.innerHTML = '<img src="assets/images/card_' + i + '.png">'
@@ -144,8 +154,6 @@
     
     document.getElementById("playAgainBtn").onclick = reset;
     const gameOverScreen = document.getElementById("gameOverScreen");
-
-    // TODO: play music
 
     reset();
 
