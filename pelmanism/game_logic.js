@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const TOTAL_PAIRS = 24;
     const HOR_CARDS_COUNT = 4;
     const COLORS = [
         'tomato',
@@ -25,18 +26,23 @@
         const temp = [];
         openCard = -1;
         gameOverScreen.style.display = 'none';
+        var index = Math.floor(Math.random() * TOTAL_PAIRS)
 
-        for (var i = 0; i < deck.length; ++i) {
-            cardPHs[i].innerHTML = "";
-            covers[i].style.display = 'none';
-            cardPHs[i].appendChild(covers[i]);
-            pairs[i] = undefined;
-            temp.push(deck[i]);
+        for (var i = 0; i < COLORS.length; ++i) {
+            for (var j = 0; j < 2; ++j) {
+                cardPHs[i * 2 + j].innerHTML = "";
+                covers[i * 2 + j].style.display = 'none';
+                cardPHs[i * 2 + j].appendChild(covers[i * 2 + j]);
+                pairs[i * 2 + j] = undefined;
+                var card = deck[((index + i) % TOTAL_PAIRS) * 2 + j];
+                card.card.style.backgroundColor = COLORS[i];
+                temp.push(card);
+            }
         }
 
         var counter = 0;
         while (temp.length > 0) {
-            var index = Math.floor(Math.random() * temp.length);
+            index = Math.floor(Math.random() * temp.length);
             pairs[counter] = temp[index];
             temp[index].card.style.display = 'block';
             cardPHs[counter].appendChild(temp[index].card);
@@ -58,6 +64,11 @@
             openCard = index;
         }
         else {
+            // remove events temporarily
+            for (var i = 0; i < covers.length; ++i) {
+                covers[i].onclick = undefined;
+            }
+
             // did we find a match?
             if (pairs[index].card.style.backgroundColor === pairs[openCard].card.style.backgroundColor) {
                 // remove the cards from pairs[]
@@ -86,11 +97,6 @@
                 }, 1000);
             }
             else {
-
-                // remove events temporarily
-                for (var i = 0; i < covers.length; ++i) {
-                    covers[i].onclick = undefined;
-                }
                 // flip cards back down
                 const tempCard = openCard;
                 setTimeout(function() {
@@ -100,12 +106,16 @@
                         pairs[tempCard].card.style.boxShadow = pairs[index].card.style.boxShadow = '0 0 6px black';
                         pairs[tempCard].card.style.display = pairs[index].card.style.display = 'none';
                         covers[tempCard].style.display = covers[index].style.display = 'block';
-                        for (var i = 0; i < covers.length; ++i) {
-                            covers[i].onclick = onCardClicked;
-                        }
                     }, 1000);
                 }, 1000);
             }
+
+            // add events back
+            setTimeout(function () {
+                for (var i = 0; i < covers.length; ++i) {
+                    covers[i].onclick = onCardClicked;
+                }
+            }, 2000);
             openCard = -1;
         }
     };
@@ -128,18 +138,17 @@
         cover.onclick = onCardClicked;
         cover.className = 'card';
         cover.style.backgroundColor = '#acf';
-        cover.innerHTML = '<img src="assets/images/cover.png">'
+        cover.innerHTML = '<img src="assets/images/cover.png">';
+        pairs.push(undefined);
     }
 
-    for (var i = 0; i < COLORS.length; ++i) {
+    for (var i = 0; i < TOTAL_PAIRS; ++i) {
         var audio = new Audio('assets/audio/card_' + i + '.mp3');
         for (var j = 0; j < 2; ++j) {
             var card = document.createElement('div');
             deck.push({ card: card, audio: audio });
             card.className = 'card';
-            card.style.backgroundColor = COLORS[i];
             card.innerHTML = '<img src="assets/images/card_' + i + '.png">'
-            pairs.push(undefined);
         }
     }
 
