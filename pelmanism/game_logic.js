@@ -70,7 +70,7 @@
             }
 
             // did we find a match?
-            if (pairs[index].card.style.backgroundColor === pairs[openCard].card.style.backgroundColor) {
+            if (pairs[index].id === pairs[openCard].id) {
                 // remove the cards from pairs[]
                 var openCards = [pairs[openCard].card, pairs[index].card];
                 pairs[openCard] = pairs[index] = undefined;
@@ -138,7 +138,7 @@
         cover.onclick = onCardClicked;
         cover.className = 'card';
         cover.style.backgroundColor = '#acf';
-        cover.innerHTML = '<img src="assets/images/cover.png">';
+        cover.innerHTML = '<img src="assets/images/cover.png" draggable="false">';
         pairs.push(undefined);
     }
 
@@ -146,9 +146,9 @@
         var audio = new Audio('assets/audio/card_' + i + '.mp3');
         for (var j = 0; j < 2; ++j) {
             var card = document.createElement('div');
-            deck.push({ card: card, audio: audio });
+            deck.push({ card: card, audio: audio, id: i });
             card.className = 'card';
-            card.innerHTML = '<img src="assets/images/card_' + i + '.png">'
+            card.innerHTML = '<img src="assets/images/card_' + i + '.png" draggable="false">'
         }
     }
 
@@ -165,5 +165,4 @@
     const gameOverScreen = document.getElementById("gameOverScreen");
 
     reset();
-
 })();
