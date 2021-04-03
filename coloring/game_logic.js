@@ -1,7 +1,7 @@
 (function() {
     "use strict"
 
-    const TOTAL_DRAWINGS = 2; // don't forget to increment as you add new images
+    const TOTAL_DRAWINGS = 3; // don't forget to increment as you add new images
     const drawing = document.getElementById("main_image");
     const colors = document.getElementsByClassName("color_pick");
     var currentColor = colors[0];
