@@ -1,12 +1,12 @@
 (function() {
     "use strict"
 
-    const TOTAL_DRAWINGS = 4; // don't forget to increment as you add new images
+    const TOTAL_DRAWINGS = 5; // don't forget to increment as you add new images
     const drawing = document.getElementById("main_image");
     const colors = document.getElementsByClassName("color_pick");
     var currentColor = colors[0];
     var imgIndex = Number.parseInt(location.href.substr(location.href.indexOf('?') + 1)); // select an image based on url params 
-    if (Number.isNaN(imgIndex) || imgIndex >= TOTAL_DRAWINGS) { // in case we fail to parse the url params, load a random image
+    if (Number.isNaN(imgIndex) || imgIndex >= TOTAL_DRAWINGS || imgIndex < 0) { // in case we fail to parse the url params, load a random image
         imgIndex = Math.floor(Math.random() * TOTAL_DRAWINGS);
     }
 
