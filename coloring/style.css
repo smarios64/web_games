@@ -21,8 +21,8 @@ body {
 }
 
 .color_pick {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 50px;
     border: 3px solid #bbb;
     box-sizing: border-box;
@@ -32,6 +32,6 @@ body {
 
 .palette {
     position: absolute;
-    top: 40px;
-    left: 10px;
+    top: 45px;
+    left: 30px;
 }
